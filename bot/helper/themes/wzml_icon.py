@@ -118,7 +118,7 @@ Token sementara bukan milik Anda! \nSilakan buat sendiri'''
 
     # async def ping(client, message): ---> __main__.py
     PING = '<i>Tes ping........</i>'
-    PING_VALUE = '<b>Bot aktive✅</b>\n<code>{value} Ms.....</code>'
+    PING_VALUE = '<b>Bot aktive✅</b>\n<code>{value} ᴍs..</code>'
     # ---------------------
 
     # async def onDownloadStart(self): --> tasks_listener.py
@@ -132,8 +132,8 @@ Token sementara bukan milik Anda! \nSilakan buat sendiri'''
 ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n\n"""
     
     # async def __msg_to_reply(self): ---> pyrogramEngine.py
-    PM_START =            "<blockquote>➲ <b><u>Tugas dimulai :</u></b>\n\n• <b>Link:</b> <a href='{msg_link}'>Klik disini</a></blockquote>"
-    L_LOG_START =           "<blockquote>➲ <b><u>Unggah Telegram Dimulai :</u></b>\n\n• <b>Pengguna :</b> {mention} ( #ID{uid} )\n• <b>Sumber Tautan :</b> <a href='{msg_link}'>Klik Disini</a></blockquote>"
+    PM_START =            "<blockquote>➲ <b><u>Tᴀsᴋ Sᴛᴀʀᴛᴇᴅ :</u></b>\n\n• <b>Link:</b> <a href='{msg_link}'>Cʟɪᴄᴋ Hᴇʀᴇ</a></blockquote>"
+    L_LOG_START =           "<blockquote>➲ <b><u>Lᴇᴇᴄʜ Sᴛᴀʀᴛᴇᴅ :</u></b>\n\n• <b>Usᴇʀ :</b> {mention} ( #ID{uid} )\n• <b>Sᴏᴜʀᴄᴇ :</b> <a href='{msg_link}'>Cʟɪᴄᴋ Hᴇʀᴇ</a></blockquote>"
 
     # async def onUploadComplete(): ---> tasks_listener.py
     NAME =                  '<b><i>{Name}</i></b>\n\n'
@@ -146,22 +146,22 @@ Token sementara bukan milik Anda! \nSilakan buat sendiri'''
     L_CORRUPTED_FILES =     '• <b>File Rusak</b> : {Corrupt}\n'
     L_CC =                  '• <b>Pengguna</b> : {Tag}\n'
     PM_BOT_MSG =            '➲ <b><i>File(s) sudah dikirim</i></b>'
-    L_BOT_MSG =             '➲ <b><i>File dikirim ke PM \nUntuk menghindari penghapusan file berkala, segera amankan files Anda</i></b>'
-    L_LL_MSG =              '➲ <b><i>File dikirim ke PM \nUntuk menghindari penghapusan files berkala, segera amankan files Anda</i></b></blockquote>\n'
+    L_BOT_MSG =             '➲ <b><i>File dikirim ke PM</i></b>'
+    L_LL_MSG =              '➲ <b><i>Untuk menghindari penghapusan files berkala, segera amankan files Anda</i></b>\n'
     
     # ----- MIRROR -------
-    M_TYPE =                '• <b>Type</b>               : {Mimetype}\n'
-    M_SUBFOLD =             '• <b>Sub Folder</b>       : {Folder}\n'
-    TOTAL_FILES =           '• <b>Total File</b>          : {Files}\n'
+    M_TYPE =                '• <b>Type</b>: {Mimetype}\n'
+    M_SUBFOLD =             '• <b>Sub Folder</b> : {Folder}\n'
+    TOTAL_FILES =           '• <b>Total File</b> : {Files}\n'
     RCPATH =                '• <b>Jalur Penyimpanan</b> : {RCpath}\n'
-    M_CC =                  '• <b>Pengguna</b>           : {Tag}\n'
+    M_CC =                  '• <b>Pengguna</b> : {Tag}\n'
     M_BOT_MSG =             '➲ <b><i>Link download di kirim ke PM dan segera download file anda sebelum ada penghapusan berkala</b></blockquote>'
     # ----- BUTTONS -------
     CLOUD_LINK =      '☁️ Tautan Unduhan'
     SAVE_MSG =        '📨 Simpan Pesan'
     RCLONE_LINK =     '♻️ RCʟᴏɴᴇ Lɪɴᴋ'
     DDL_LINK =        '📎 Tautan {Serv} '
-    SOURCE_URL =      '🔐 Sumber'
+    SOURCE_URL =      '🔐 Sumber Tautan'
     INDEX_LINK_F =    '🗂 Iɴᴅᴇx Lɪɴᴋ'
     INDEX_LINK_D =    '⚡ Iɴᴅᴇx Lɪɴᴋ'
     VIEW_LINK =       '🌐 Lihat Tautan'
@@ -173,27 +173,20 @@ Token sementara bukan milik Anda! \nSilakan buat sendiri'''
 
     # def get_readable_message(): ---> bot_utilis.py
     ####--------OVERALL MSG HEADER----------
-    STATUS_NAME =       '<blockquote><code><b>{Name}</b></code></blockquote>\n'
+    STATUS_NAME =       '<blockquote><code>{Name}</code></blockquote>\n'
 
     #####---------PROGRESSIVE STATUS-------
-    STATUS =         '{Status}'
-    BAR =                      '{Bar}'
-    PROCESSED =      '\n• Ukuran        : {Processed}'
-    SPEED =            '\n• Kecepatan   : {Speed}'
+    STATUS =            '\n• {Status}'
+    BAR =                           '{Bar}'
+    PROCESSED =         '\n• 💿 : {Processed}'
+    SPEED =             '\n• 🚀 : {Speed}'
     
-    ETA =                '\n• Perkiraan    : {Eta}'
-    ELAPSED =         '\n• Berjalan      : {Elapsed}'
-    ENGINE =           '\n• Mesin          : {Engine}'
-    STA_MODE =       '\n• Upload        : {Mode}'
-    SEEDERS =          '\n• S/L          : {Seeders} / '
-    LEECHERS =                                ' {Leechers}'
-    USER =              '\n• Pengguna    : <code>{User}</code> • '
-    ID =                                                        ' (<code>{Id}</code>)'
-    BTSEL =             '\n• Pilih Torent  :</b> {Btsel}'
-    CANCEL =         '\n\n⚠️{Cancel} \n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n'
-    STATUS_SIZE =    '\n• Ukuran       : {Size}'
-    NON_ENGINE =   '\n• Mesin        : {Engine}'
-    
+    ETA =               '\n• ⏰ : {Eta}'
+    ELAPSED =           '\n• ⏳ : {Elapsed}'
+    ENGINE =            '\n• 🚂 : {Engine}'
+    STA_MODE =          '\n• ⚒️ : {Mode}'
+    SEEDERS =           '\n• 🧲 : {Seeders} • '
+    LEECHERS =                                           '👾 : {Leechers}'
 
     ####--------SEEDING----------
     SEED_SIZE =      '\n• <b>Sɪᴢᴇ: </b>{Size}'
@@ -204,10 +197,14 @@ Token sementara bukan milik Anda! \nSilakan buat sendiri'''
     SEED_ENGINE =    '\n• <b>Eɴɢɪɴᴇ:</b> {Engine}'
 
     ####--------NON-PROGRESSIVE + NON SEEDING----------
-    
+    STATUS_SIZE =    '\n• <b>Sɪᴢᴇ: </b>{Size}'
+    NON_ENGINE =     '\n• <b>Eɴɢɪɴᴇ:</b> {Engine}'
 
     ####--------OVERALL MSG FOOTER----------
-    
+    USER =              '\n• 🙎‍♂️ : <code>{User}</code> • '
+    ID =                                                        ' (<code>{Id}</code>)'
+    BTSEL =          '\n• <b>☑ :</b> {Btsel}'
+    CANCEL =         '\n\n⚠️{Cancel} \n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n'
 
     ####------FOOTER--------
     FOOTER = '🌀 <b><i>Bᴏᴛ Sᴛᴀᴛs</i></b>\n'
@@ -221,9 +218,9 @@ Token sementara bukan milik Anda! \nSilakan buat sendiri'''
     UL =                        '<b>🔼 :</b> {UL}/s</blockquote>'
 
     ###--------BUTTONS-------
-    PREVIOUS = 'Sebelumnya'
-    REFRESH = 'Halaman\n{Page}'
-    NEXT = 'Selanjutnya'
+    PREVIOUS = '◀️'
+    REFRESH = 'Pᴀɢᴇs\n{Page}'
+    NEXT = '▶️'
     # ---------------------
 
     #STOP_DUPLICATE_MSG: ---> clone.py, aria2_listener.py, task_manager.py
