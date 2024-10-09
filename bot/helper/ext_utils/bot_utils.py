@@ -1,3 +1,4 @@
+
 #!/usr/bin/env python3
 import platform
 from base64 import b64encode
@@ -44,17 +45,18 @@ PAGE_NO      = 1
 
 
 class MirrorStatus:
-    STATUS_UPLOADING   = "Upload"
-    STATUS_DOWNLOADING = "Download"
-    STATUS_CLONING     = "Clone"
-    STATUS_QUEUEDL     = "QueueDL"
-    STATUS_QUEUEUP     = "QueueUp"
-    STATUS_PAUSED      = "Pause"
-    STATUS_ARCHIVING   = "Archive"
-    STATUS_EXTRACTING  = "Extract"
-    STATUS_SPLITTING   = "Split"
-    STATUS_CHECKING    = "CheckUp"
-    STATUS_SEEDING     = "Seed"
+    STATUS_UPLOADING   = "📤 Unggah..."
+    STATUS_DOWNLOADING = "📥 Unduh..."
+    STATUS_CLONING     = "🔱 Menggandakan..."
+    STATUS_QUEUEDL     = "⏳ AntrianUnduh"
+    STATUS_QUEUEUP     = "⏳ AntrianUnggah"
+    STATUS_PAUSED      = "⏸ Berhenti"
+    STATUS_ARCHIVING   = "🗃 Membungkus..."
+    STATUS_EXTRACTING  = "⚒️ Membongkar..."
+    STATUS_SPLITTING   = "✂ Membagi..."
+    STATUS_METADATA    = "Aᴅᴅɪɴɢ Mᴇᴛᴀᴅᴀᴛᴀ"
+    STATUS_CHECKING    = "CʜᴇᴄᴋUᴘ"
+    STATUS_SEEDING     = "Sᴇᴇᴅq"
 
 
 class setInterval:
@@ -114,7 +116,7 @@ def bt_selection_buttons(id_):
         buttons.ibutton("Pincode", f"btsel pin {gid} {pincode}")
     else:
         buttons.ubutton("Select Files", f"{BASE_URL}/app/files/{id_}?pin_code={pincode}")
-    buttons.ibutton("Cancel", f"btsel rm {gid} {id_}")
+    buttons.ibutton("Tutup", f"btsel rm {gid} {id_}")
     buttons.ibutton("Done Selecting", f"btsel done {gid} {id_}")
     return buttons.build_menu(2)
 
@@ -135,18 +137,30 @@ def handleIndex(index, dic):
             elif index > 0: index = index - len(dic)
         else: break
     return index
+    
 
-def get_progress_bar_string(pct):
+def get_progress_bar_stringORI(pct):
     pct = float(str(pct).strip('%'))
     p = min(max(pct, 0), 100)
     cFull = int(p // 8)
     cPart = int(p % 8 - 1)
-    p_str = '■' * cFull
+    p_str = '●' * cFull
     if cPart >= 0:
-        p_str += ['▤', '▥', '▦', '▧', '▨', '▩', '■'][cPart]
-    p_str += '□' * (12 - cFull)
-    return f"[{p_str}]"
-
+        p_str += ['◌', '○', '○', '◎', '◉', '◕', '●'][cPart]
+    p_str += '◌' * (12 - cFull)
+    return f"{p_str}"
+    
+def get_progress_bar_string(pct):
+    if isinstance(pct, str):
+        pct = float(pct.strip("%"))
+    p = min(
+        max(pct, 0),
+        100
+    )
+    cFull = int(p // 10)
+    p_str = "●" * cFull
+    p_str += "◌" * (10 - cFull)
+    return f"{p_str}"
 
 def get_all_versions():
     try:
@@ -155,12 +169,12 @@ def get_all_versions():
     except FileNotFoundError:
         vp = ''
     try:
-        result = srun(['ffmpeg', '-version'], capture_output=True, text=True)
+        result = srun([bot_cache['pkgs'][2], '-version'], capture_output=True, text=True)
         vf = result.stdout.split('\n')[0].split(' ')[2].split('ubuntu')[0]
     except FileNotFoundError:
         vf = ''
     try:
-        result = srun(['rclone', 'version'], capture_output=True, text=True)
+        result = srun([bot_cache['pkgs'][3], 'version'], capture_output=True, text=True)
         vr = result.stdout.split('\n')[0].split(' ')[1]
     except FileNotFoundError:
         vr = ''
@@ -187,17 +201,17 @@ class EngineStatus:
             get_all_versions()
             version_cache = bot_cache.get('eng_versions')
         self.STATUS_ARIA = f"Aria2 v{version_cache['aria']}"
-        self.STATUS_AIOHTTP = f"AioHttp {version_cache['aiohttp']}"
+        self.STATUS_AIOHTTP = f"AIOhttp {version_cache['aiohttp']}"
         self.STATUS_GD = f"Google-API v{version_cache['gapi']}"
-        self.STATUS_MEGA = f"MegaSDK v{version_cache['mega']}"
-        self.STATUS_QB = f"qBit {version_cache['qbit']}"
+        self.STATUS_MEGA = f"MEGA-sdk v{version_cache['mega']}"
+        self.STATUS_QB = f"QBit {version_cache['qbit']}"
         self.STATUS_TG = f"PyroMulti v{version_cache['pyro']}"
-        self.STATUS_YT = f"yt-dlp v{version_cache['ytdlp']}"
-        self.STATUS_EXT = "pExtract v2"
-        self.STATUS_SPLIT_MERGE = f"ffmpeg v{version_cache['ffmpeg']}"
+        self.STATUS_YT = f"Youtube v{version_cache['ytdlp']}"
+        self.STATUS_EXT = "ᴘExᴛʀᴀᴄᴛ ᴠ𝟸"
+        self.STATUS_SPLIT_MERGE = f"FFMpeg v{version_cache['ffmpeg']}"
         self.STATUS_ZIP = f"p7zip v{version_cache['p7zip']}"
         self.STATUS_QUEUE = "Sleep v0"
-        self.STATUS_RCLONE = f"RClone {version_cache['rclone']}"
+        self.STATUS_RCLONE = f"Rclone {version_cache['rclone']}"
 
 
 def get_readable_message():
@@ -213,13 +227,15 @@ def get_readable_message():
         msg_link = download.message.link if download.message.chat.type in [
             ChatType.SUPERGROUP, ChatType.CHANNEL] and not config_dict['DELETE_LINKS'] else ''
         elapsed = time() - download.message.date.timestamp()
-        msg += BotTheme('STATUS_NAME', Name="Task is being Processed!" if config_dict['SAFE_MODE'] and elapsed >= config_dict['STATUS_UPDATE_INTERVAL'] else escape(f'{download.name()}'))
-        if download.status() not in [MirrorStatus.STATUS_SPLITTING, MirrorStatus.STATUS_SEEDING]:
+        msg += BotTheme('STATUS_NAME', Name="Tugas sedang di proses...." if config_dict['SAFE_MODE'] and elapsed >= config_dict['STATUS_UPDATE_INTERVAL'] else escape(f'{download.name()}'))
+        if download.status() not in [MirrorStatus.STATUS_SPLITTING, MirrorStatus.STATUS_SEEDING, MirrorStatus.STATUS_METADATA]:
+            msg += BotTheme('STATUS', Status=download.status(), Url=msg_link)
             msg += BotTheme('BAR', Bar=f"{get_progress_bar_string(download.progress())} {download.progress()}")
             msg += BotTheme('PROCESSED', Processed=f"{download.processed_bytes()} of {download.size()}")
-            msg += BotTheme('STATUS', Status=download.status(), Url=msg_link)
-            msg += BotTheme('ETA', Eta=download.eta())
             msg += BotTheme('SPEED', Speed=download.speed())
+            #msg += BotTheme('STATUS', Status=download.status(), Url=msg_link)
+            msg += BotTheme('ETA', Eta=download.eta())
+            #msg += BotTheme('SPEED', Speed=download.speed())
             msg += BotTheme('ELAPSED', Elapsed=get_readable_time(elapsed))
             msg += BotTheme('ENGINE', Engine=download.eng())
             msg += BotTheme('STA_MODE', Mode=download.upload_details['mode'])
@@ -323,7 +339,7 @@ async def turn_page(data):
 
 
 def get_readable_time(seconds):
-    periods = [('d', 86400), ('h', 3600), ('m', 60), ('s', 1)]
+    periods = [('hari ', 86400), ('jam ', 3600), ('menit ', 60), ('detik', 1)]
     result = ''
     for period_name, period_seconds in periods:
         if seconds >= period_seconds:
@@ -352,8 +368,8 @@ def is_share_link(url):
     return bool(re_match(r'https?:\/\/.+\.gdtot\.\S+|https?:\/\/(.+\.filepress|filebee|appdrive|gdflix|www.jiodrive)\.\S+', url))
 
 
-def is_index_link(url): 
-     return bool(re_match(r'https?:\/\/.+\/\d+\:\/', url))    
+def is_index_link(url):
+     return bool(re_match(r'https?:\/\/.+\/\d+\:\/', url))
 
 
 def is_mega_link(url):
@@ -501,13 +517,13 @@ async def compare_versions(v1, v2):
 async def get_stats(event, key="home"):
     user_id = event.from_user.id
     btns = ButtonMaker()
-    btns.ibutton('Back', f'wzmlx {user_id} stats home')
+    btns.ibutton('◀️', f'wzmlx {user_id} stats home')
     if key == "home":
         btns = ButtonMaker()
-        btns.ibutton('Bot Stats', f'wzmlx {user_id} stats stbot')
-        btns.ibutton('OS Stats', f'wzmlx {user_id} stats stsys')
-        btns.ibutton('Repo Stats', f'wzmlx {user_id} stats strepo')
-        btns.ibutton('Bot Limits', f'wzmlx {user_id} stats botlimits')
+        btns.ibutton('Bᴏᴛ Sᴛᴀᴛs', f'wzmlx {user_id} stats stbot')
+        btns.ibutton('Os Sᴛᴀᴛs', f'wzmlx {user_id} stats stsys')
+        btns.ibutton('Rᴇᴘᴏ Sᴛᴀᴛs', f'wzmlx {user_id} stats strepo')
+        btns.ibutton('Bᴏᴛ Lɪᴍɪᴛs', f'wzmlx {user_id} stats botlimits')
         msg = "⌬ <b><i>Bot & OS Statistics!</i></b>"
     elif key == "stbot":
         total, used, free, disk = disk_usage('/')
@@ -531,10 +547,10 @@ async def get_stats(event, key="home"):
             disk_bar=get_progress_bar_string(disk),
             disk_read=f"{get_readable_file_size(disk_io.read_bytes)} ({get_readable_time(disk_io.read_time / 1000)})"
             if disk_io
-            else "Access Denied",
+            else "Aᴄᴄᴇss Dᴇɴɪᴇᴅ",
             disk_write=f"{get_readable_file_size(disk_io.write_bytes)} ({get_readable_time(disk_io.write_time / 1000)})"
             if disk_io
-            else "Access Denied",
+            else "Aᴄᴄᴇss Dᴇɴɪᴇᴅ",
             disk_t=get_readable_file_size(total),
             disk_u=get_readable_file_size(used),
             disk_f=get_readable_file_size(free),
@@ -564,7 +580,7 @@ async def get_stats(event, key="home"):
         if await aiopath.exists('.git'):
             last_commit = (await cmd_exec("git log -1 --pretty='%cd ( %cr )' --date=format-local:'%d/%m/%Y'", True))[0]
             changelog = (await cmd_exec("git log -1 --pretty=format:'<code>%s</code> <b>By</b> %an'", True))[0]
-        official_v = (await cmd_exec(f"curl -o latestversion.py https://raw.githubusercontent.com/weebzone/WZML-X/{config_dict['UPSTREAM_BRANCH']}/bot/version.py -s && python3 latestversion.py && rm latestversion.py", True))[0]
+        official_v = (await cmd_exec("curl -o latestversion.py https://gitlab.com/mysterysd.sd/WZML-X/-/raw/hk_wzmlx/bot/version.py -s && python3 latestversion.py && rm latestversion.py", True))[0]
         msg = BotTheme('REPO_STATS',
             last_commit=last_commit,
             bot_version=get_version(),
@@ -582,12 +598,12 @@ async def get_stats(event, key="home"):
                 CL = ('∞' if (val := config_dict['CLONE_LIMIT']) == '' else val),
                 ML = ('∞' if (val := config_dict['MEGA_LIMIT']) == '' else val),
                 LL = ('∞' if (val := config_dict['LEECH_LIMIT']) == '' else val),
-                TV  = ('Disabled' if (val := config_dict['TOKEN_TIMEOUT']) == '' else get_readable_time(val)),
-                UTI = ('Disabled' if (val := config_dict['USER_TIME_INTERVAL']) == 0 else get_readable_time(val)),
+                TV  = ('Dɪsᴀʙʟᴇᴅ' if (val := config_dict['TOKEN_TIMEOUT']) == '' else get_readable_time(val)),
+                UTI = ('Dɪsᴀʙʟᴇᴅ' if (val := config_dict['USER_TIME_INTERVAL']) == 0 else get_readable_time(val)),
                 UT = ('∞' if (val := config_dict['USER_MAX_TASKS']) == '' else val),
                 BT = ('∞' if (val := config_dict['BOT_MAX_TASKS']) == '' else val),
         )
-    btns.ibutton('Close', f'wzmlx {user_id} close')
+    btns.ibutton('Tutup', f'wzmlx {user_id} close')
     return msg, btns.build_menu(2)
 
 
@@ -673,6 +689,7 @@ def extra_btns(buttons, already=False):
     return buttons, True
 
 
+
 async def set_commands(client):
     if not config_dict['SET_COMMANDS']:
         return
@@ -680,43 +697,43 @@ async def set_commands(client):
         bot_cmds = [
             BotCommand(
                 BotCommands.MirrorCommand[0],
-                f'or /{BotCommands.MirrorCommand[1]} Mirror [links/media/rclone_path]',
+                f'or /{BotCommands.MirrorCommand[1]} Unggah ke drive ',
             ),
             BotCommand(
                 BotCommands.LeechCommand[0],
-                f'or /{BotCommands.LeechCommand[1]} Leech [links/media/rclone_path]',
+                f'or /{BotCommands.LeechCommand[1]} Unggah ke telegram ',
             ),
             BotCommand(
                 BotCommands.QbMirrorCommand[0],
-                f'or /{BotCommands.QbMirrorCommand[1]} Mirror magnet/torrent using qBittorrent',
+                f'or /{BotCommands.QbMirrorCommand[1]} Unggah torent ke cloud',
             ),
             BotCommand(
                 BotCommands.QbLeechCommand[0],
-                f'or /{BotCommands.QbLeechCommand[1]} Leech magnet/torrent using qBittorrent',
+                f'or /{BotCommands.QbLeechCommand[1]} Unggah torent ke telegram',
             ),
             BotCommand(
                 BotCommands.YtdlCommand[0],
-                f'or /{BotCommands.YtdlCommand[1]} Mirror yt-dlp supported links via bot',
+                f'or /{BotCommands.YtdlCommand[1]} Unduh dari yt dan unggah ke cloud',
             ),
             BotCommand(
                 BotCommands.YtdlLeechCommand[0],
-                f'or /{BotCommands.YtdlLeechCommand[1]} Leech yt-dlp supported links via bot',
+                f'or /{BotCommands.YtdlLeechCommand[1]} Unduh dari yt dan unggah ke telegram',
             ),
             BotCommand(
                 BotCommands.CloneCommand[0],
-                f'or /{BotCommands.CloneCommand[1]} Copy file/folder to Drive (GDrive/RClone)',
+                f'or /{BotCommands.CloneCommand[1]} Salin ke gdrive',
             ),
             BotCommand(
                 BotCommands.CountCommand,
-                '[drive_url]: Count file/folder of Google Drive/RClone Drives',
+                '[drive_url]: Hitung file/folder Google Drive/RClone Drive',
             ),
             BotCommand(
                 BotCommands.StatusCommand[0],
-                f'or /{BotCommands.StatusCommand[1]} Get Bot All Status Stats Message',
+                f'or /{BotCommands.StatusCommand[1]} Lihat status bot',
             ),
             BotCommand(
                 BotCommands.StatsCommand[0],
-                f'or /{BotCommands.StatsCommand[1]} Check Bot & System stats',
+                f'or /{BotCommands.StatsCommand[1]} Melihat system bot',
             ),
             BotCommand(
                 BotCommands.BtSelectCommand,
@@ -726,23 +743,23 @@ async def set_commands(client):
                 BotCommands.CategorySelect,
                 'Select Upload Category with UserTD or Bot Categories to upload only GDrive upload',
             ),
-            BotCommand(BotCommands.CancelMirror, 'Cancel a Task of yours!'),
+            BotCommand(BotCommands.CancelMirror, 'Batalkan tugas'),
             BotCommand(
                 BotCommands.CancelAllCommand[0],
-                'Cancel all Tasks in whole Bots.',
+                'Batalkan semua tugas',
             ),
-            BotCommand(BotCommands.ListCommand, 'Search in Drive(s)'),
+            BotCommand(BotCommands.ListCommand, 'Cari di Gdrive'),
             BotCommand(
                 BotCommands.SearchCommand,
-                'Search in Torrent via qBit clients!',
+                'Cari di Torent',
             ),
             BotCommand(
                 BotCommands.HelpCommand,
-                'Get detailed help about the WZML-X Bot',
+                'Cara Menggunakan Bot',
             ),
             BotCommand(
                 BotCommands.UserSetCommand[0],
-                f"or /{BotCommands.UserSetCommand[1]} User's Personal Settings (Open in PM)",
+                f"or /{BotCommands.UserSetCommand[1]} Membuka pengaturan pengguna",
             ),
             BotCommand(
                 BotCommands.IMDBCommand,
@@ -750,11 +767,11 @@ async def set_commands(client):
             ),
             BotCommand(
                 BotCommands.AniListCommand,
-                'Search Animes on AniList.com and fetch details',
+                'Mencari Anime on AniList.com and fetch details',
             ),
             BotCommand(
                 BotCommands.MyDramaListCommand,
-                'Search Dramas on MyDramaList.com and fetch details',
+                'Mencari drama di  MyDramaList.com and fetch details',
             ),
             BotCommand(
                 BotCommands.SpeedCommand[0],
@@ -766,18 +783,18 @@ async def set_commands(client):
             ),
             BotCommand(
                 BotCommands.BotSetCommand[0],
-                f"or /{BotCommands.BotSetCommand[1]} Bot's Personal Settings (Owner or Sudo Only)",
+                f'or /{BotCommands.BotSetCommand[1]} Hanya ADMIN dan SUDO',
             ),
             BotCommand(
                 BotCommands.RestartCommand[0],
-                f'or /{BotCommands.RestartCommand[1]} Restart & Update the Bot (Owner or Sudo Only)',
+                f'or /{BotCommands.RestartCommand[1]} Restart bot',
             ),
         ]
         if config_dict['SHOW_EXTRA_CMDS']:
-            bot_cmds.insert(1, BotCommand(BotCommands.MirrorCommand[2], f'or /{BotCommands.MirrorCommand[3]} Mirror and UnZip [links/media/rclone_path]'))
-            bot_cmds.insert(1, BotCommand(BotCommands.MirrorCommand[4], f'or /{BotCommands.MirrorCommand[5]} Mirror and Zip [links/media/rclone_path]'))
-            bot_cmds.insert(4, BotCommand(BotCommands.LeechCommand[2], f'or /{BotCommands.LeechCommand[3]} Leech and UnZip [links/media/rclone_path]'))
-            bot_cmds.insert(4, BotCommand(BotCommands.LeechCommand[4], f'or /{BotCommands.LeechCommand[5]} Leech and Zip [links/media/rclone_path]'))
+            bot_cmds.insert(1, BotCommand(BotCommands.MirrorCommand[2], f'or /{BotCommands.MirrorCommand[3]} Unduh dan Extrak ke cloud'))
+            bot_cmds.insert(1, BotCommand(BotCommands.MirrorCommand[4], f'or /{BotCommands.MirrorCommand[5]} Unduh dan jadikan ZIP ke cloud'))
+            bot_cmds.insert(4, BotCommand(BotCommands.LeechCommand[2], f'or /{BotCommands.LeechCommand[3]} Unduh dan extrak ke Telegram'))
+            bot_cmds.insert(4, BotCommand(BotCommands.LeechCommand[4], f'or /{BotCommands.LeechCommand[5]} Unduh dan jadikan ZIP ke telegram'))
             bot_cmds.insert(7, BotCommand(BotCommands.QbMirrorCommand[2], f'or /{BotCommands.QbMirrorCommand[3]} Mirror magnet/torrent and UnZip using qBit'))
             bot_cmds.insert(7, BotCommand(BotCommands.QbMirrorCommand[4], f'or /{BotCommands.QbMirrorCommand[5]} Mirror magnet/torrent and Zip using qBit'))
             bot_cmds.insert(10, BotCommand(BotCommands.QbLeechCommand[2], f'or /{BotCommands.QbLeechCommand[3]} Leech magnet/torrent and UnZip using qBit'))
