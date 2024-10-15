@@ -1,88 +1,84 @@
 #!/usr/bin/env python3
 from bot.helper.telegram_helper.bot_commands import BotCommands
 
-YT_HELP_MESSAGE = ["""<i>Send links/files along with cmd or reply to cmd to mirror or leech ytdl supported stes on Telegram or GDrive or DDLs with different Engines like RClone or yt-dlp</i>
+YT_HELP_MESSAGE = ["""<i>Kirim tautan / file bersama dengan cmd atau balas cmd ke mirror atau leech ste yang didukung ytdl di Telegram atau GDrive atau DDLs dengan Mesin berbeda seperti RClone atau yt-dlp</i>
 
-➲ <b><u>Available Args</u></b>:
+➲ <b><u>Argumen yg tersedia</u></b>:
 
-1.  <b>-n or -name :</b> Rename file.
-2.  <b>-z or -zip :</b> Zip files or Links
-3.  <b>-up or -upload :</b> Upload to your Drive or RClone or DDL
-4.  <b>-b or -bulk :</b> Download bulk links.
-5.  <b>-i :</b> Download multi links by reply
-6.  <b>-m or -sd or -samedir :</b> Download multi links within same upload directory.
-7.  <b>-opt or -options :</b> Attach Custom yt-dlp options to link
-8.  <b>-s or -select :</b> Select files from yt-dlp links even if qual is specified
-9.  <b>-rcf :</b> RClone additional Flags
-10. <b>-id :</b> GDrive Folder id or link
-11. <b>-index:</b> Index url for gdrive_arg
-12. <b>-c or -category :</b> Gdrive category to Upload, Specific Name (case insensitive)
-13. <b>-ud or -dump :</b> Dump category to Upload, Specific Name (case insensitive) or chat_id or chat_username
-14. <b>-ss or -screenshots :</b> Generate Screenshots for Leeched Files
-15. <b>-t or -thumb :</b> Custom Thumb for Specific Leech
+1. <b>-n atau -name :</b> Ubah nama berkas.
+2. <b>-z atau -zip :</b> Berkas Zip atau Tautan
+3. <b>-up atau -upload :</b> Unggah ke Drive atau RClone atau DDL Anda
+4. <b>-b atau -bulk :</b> Unduh tautan massal.
+5. <b>-i :</b> Unduh beberapa tautan dengan membalas
+6. <b>-m atau -sd atau -samedir :</b> Unduh beberapa tautan dalam direktori unggah yang sama. 7. <b>-opt atau -options :</b> Lampirkan opsi yt-dlp Kustom ke tautan
+8. <b>-s atau -select :</b> Pilih file dari tautan yt-dlp meskipun qual ditentukan
+9. <b>-rcf :</b> Bendera tambahan RClone
+10. <b>-id :</b> ID atau tautan Folder GDrive
+11. <b>-index:</b> Url indeks untuk gdrive_arg
+12. <b>-c atau -category :</b> Kategori Gdrive yang akan Diunggah, Nama Tertentu (tanpa memperhatikan huruf besar/kecil)
+13. <b>-ud atau -dump :</b> Buang kategori yang akan Diunggah, Nama Tertentu (tanpa memperhatikan huruf besar/kecil) atau chat_id atau chat_username
+14. <b>-ss atau -screenshots :</b> Hasilkan Tangkapan Layar untuk File yang Diambil Secara Lintah
+15. <b>-t atau -thumb :</b> Thumb Kustom untuk Lintah Tertentu
 """, """
-➲ <b><i>Send link along with command line</i></b>:
+➲ <b><i>Kirim tautan beserta baris perintah</i></b>:
 <code>/cmd</code> link -s -n new name -opt x:y|x1:y1
 
-➲ <b><i>By replying to link</i></b>:
-<code>/cmd</code> -n  new name -z password -opt x:y|x1:y1
+➲ <b><i>Dengan membalas tautan</i></b>:
+<code>/cmd</code> -n new name -z password -opt x:y|x1:y1
 
-➲ <b><i>New Name</i></b>: -n or -name
+➲ <b><i>Nama Baru</i></b>: -n atau -name
 <code>/cmd</code> link -n new name
-<b>Note:</b> Don't add file extension
+<b>Catatan:</b> Jangan tambahkan ekstensi file
 
-➲ <b><i>Screenshot Generation</b>: -ss or -screenshots
-<code>/cmd</code> link -ss number ,Screenshots for each Video File
+➲ <b><i>Pembuatan Cuplikan Layar</b>: -ss atau -screenshots
+<code>/cmd</code> link -ss number, Cuplikan Layar untuk setiap File Video
 
-➲ <b><i>Custom Thumbnail</b>: -t or -thumb
+➲ <b><i>Thumbnail Kustom</b>: -t atau -thumb
 <code>/cmd</code> link -t tglink|dl_link
-<b>Direct Link:</b> dl_link specifies download link, where it is Image url
-<b>Tg Link:</b> Give Public/Private/Super Link to download Image from Tg
+<b>Tautan Langsung:</b> dl_link menentukan tautan unduhan, di mana ia adalah URL Gambar
+<b>Tautan Tg:</b> Berikan Tautan Publik/Pribadi/Super untuk mengunduh Gambar dari Tg
 
-➲ <b><i>Quality Buttons</i></b>: -s or -select
-Incase default quality added from yt-dlp options using format option and you need to select quality for specific link or links with multi links feature.
-<code>/cmd</code> link -s
+➲ <b><i>Tombol Kualitas</i></b>: -s atau -select
+Jika kualitas default ditambahkan dari opsi yt-dlp menggunakan opsi format dan Anda perlu memilih kualitas untuk tautan tertentu atau tautan dengan fitur multitautan. <code>/cmd</code> link -s
 
-➲ <b<i>Zip files (with/without pass)</i></b>: -z or -zip password
+➲ <b<i>File Zip (dengan/tanpa kata sandi)</i></b>: -z atau -zip password
 <code>/cmd</code> link -z (zip)
-<code>/cmd</code> link -z password (zip password protected)
+<code>/cmd</code> link -z password (zip dilindungi kata sandi)
 
-➲ <b><i>Options</i></b>: -opt or -options
+➲ <b><i>Opsi</i></b>: -opt atau -options
 <code>/cmd</code> link -opt playliststart:^10|fragment_retries:^inf|matchtitle:S13|writesubtitles:true|live_from_start:true|postprocessor_args:{"ffmpeg": ["-threads", "4"]}|wait_for_video:(5, 100)
-<b>Note:</b> Add `^` before integer or float, some values must be numeric and some string.
-Like playlist_items:10 works with string, so no need to add `^` before the number but playlistend works only with integer so you must add `^` before the number like example above.
-You can add tuple and dict also. Use double quotes inside dict.
+<b>Catatan:</b> Tambahkan `^` sebelum integer atau float, beberapa nilai harus berupa angka dan beberapa string. Seperti playlist_items:10 yang bekerja dengan string, jadi tidak perlu menambahkan `^` sebelum angka, tetapi playlistend hanya bekerja dengan integer, jadi Anda harus menambahkan `^` sebelum angka seperti contoh di atas.
+Anda juga dapat menambahkan tuple dan dict. Gunakan tanda kutip ganda di dalam dict.
 
-➲ <b><i>Multi links only by replying to first link</i></b>: -i
-<code>/cmd</code> -i 10(number of links)
+➲ <b><i>Multi tautan hanya dengan membalas tautan pertama</i></b>: -i
+<code>/cmd</code> -i 10(jumlah tautan)
 
-➲ <b><i>Multi links within same upload directory only by replying to first link</i></b>: -m or -sd or -samedir
-<code>/cmd</code> -i 10(number of links) -m folder name
+➲ <b><i>Multi tautan dalam direktori unggah yang sama hanya dengan membalas tautan pertama</i></b>: -m atau -sd atau -samedir
+<code>/cmd</code> -i 10(jumlah tautan) -m nama folder
 
-➲ <b><i>Upload Custom Drive:</i></b> -id & -index(Optional)
-<code>/{cmd}</code> -id <code>drive_folder_link</code> or <code>drive_id</code> -index <code>https://example.com/0:</code>
-Here, drive_id must be folder id or folder link and index must be url else it will not accept.
+➲ <b><i>Unggah Drive Kustom:</i></b> -id & -index(Opsional)
+<code>/{cmd}</code> -id <code>drive_folder_link</code> atau <code>drive_id</code> -index <code>https://example.com/0:</code>
+Di sini, drive_id harus berupa id folder atau tautan folder dan index harus berupa url, jika tidak, drive_id tidak akan diterima.
 
-➲ <b><i>Custom Category Select:</i></b> -c or -category
-<code>/{cmd}</code> -c <code>category_name</code>
-This works for both Bot Categories as well as UserTDs (if enabled)
-You can also select Drive Upload from Buttons if having more than 1 and this arg not specified
+➲ <b><i>Pilihan Kategori Kustom:</i></b> -c atau -kategori
+<code>/{cmd}</code> -c <code>nama_kategori</code>
+Ini berfungsi untuk Kategori Bot dan UserTD (jika diaktifkan)
+Anda juga dapat memilih Unggah Drive dari Tombol jika memiliki lebih dari 1 dan argumen ini tidak ditentukan
+➲ <b><i>Pilih Dump Kustom:</i></b> -ud atau -dump
+<code>/{cmd}</code> -ud <code>dump_name</code> atau <code>@username</code> atau <code>-100xxxxxx chat_id</code> atau semua
+Anda juga dapat memilih Dump Chat dari Tombol jika memiliki lebih dari 1 dan argumen ini tidak ditentukan
+Anda -ud semua untuk Mengunggah di semua Dump Chat milik Anda
+Pastikan Bot sudah menjadi Admin jika tidak, bot tidak akan menerimanya.
 
-➲ <b><i>Custom Dump Select:</i></b> -ud or -dump
-<code>/{cmd}</code> -ud <code>dump_name</code> or <code>@username</code> or <code>-100xxxxxx chat_id</code> or all
-You can also select Dump Chat from Buttons if having more than 1 and this arg not specified
-You -ud all for Uploading in all Dump Chats of yours
-Make Sure Bot is already Admin else it will not accept.
-
-➲ <b><i>Upload</i></b>: -up or -upload
-<code>/cmd</code> link -up <code>rcl</code> (To select rclone config, remote and path)
+➲ <b><i>Unggah</i></b>: -up atau -upload
+<code>/cmd</code> link -up <code>rcl</code> (Untuk memilih konfigurasi rclone, remote, dan jalur)
 <code>/cmd</code> link -up <code>ddl</code>
-You can directly add the upload path: -up remote:dir/subdir
+Anda dapat langsung menambahkan jalur unggah: -up remote:dir/subdir
 
-If DEFAULT_UPLOAD is `rc` then you can pass up: `gd` to upload using gdrive tools to GDRIVE_ID.
-If DEFAULT_UPLOAD is `gd` then you can pass up: `rc` to upload to RCLONE_PATH.
-If DEFAULT_UPLOAD is `ddl` then you can pass up: `rc` or `gd` to upload to RCLONE_PATH or GDRIVE_ID
-If you want to add path manually from your config (uploaded from usetting) add <code>mrcc:</code> before the path without space
+Jika DEFAULT_UPLOAD adalah `rc` maka Anda dapat meneruskan: `gd` untuk mengunggah menggunakan alat gdrive ke GDRIVE_ID.
+Jika DEFAULT_UPLOAD adalah `gd` maka Anda dapat meneruskan: `rc` untuk mengunggah ke RCLONE_PATH.
+Jika DEFAULT_UPLOAD adalah `ddl` maka Anda dapat meneruskan: `rc` atau `gd` untuk mengunggah ke RCLONE_PATH atau GDRIVE_ID
+Jika Anda ingin menambahkan jalur secara manual dari konfigurasi Anda (diunggah dari pengaturan penggunaan) tambahkan <code>mrcc:</code> sebelum jalur tanpa spasi
 <code>/cmd</code> link -up <code>mrcc:</code>main:dump
 
 ➲ <b><i>RClone Flags</i></b>: -rcf
@@ -110,144 +106,149 @@ Check all yt-dlp API options from this <a href='https://github.com/yt-dlp/yt-dlp
 
 MIRROR_HELP_MESSAGE = ["""<i>Send links/files along with cmd or reply to cmd to mirror or leech on Telegram or GDrive or DDLs with different Engines like RClone, Aria2 or qBit</i>
 
-➲ <b><u>Available Args</u></b>:
+➲ <b><u>Argumen yang Tersedia</u></b>:
 
-1.  <b>-n or -name :</b> Rename file.
-2.  <b>-z or -zip :</b> Zip files or Links
-3.  <b>-e or -extract or -uz or -unzip :</b> Extract/Unzip files from Archive
-4.  <b>-up or -upload :</b> Upload to your Drive or RClone or DDL
-6.  <b>-b or -bulk :</b> Download bulk links.
-7.  <b>-i :</b> Download multi links by reply
-9.  <b>-m or -sd or -samedir :</b> Download multi links within same upload directory.
-10. <b>-d or -seed :</b> Bittorrent seed torrent.
-11. <b>-s or -select :</b> Select files from torrent via Bittorrent
-12. <b>-u or -user :</b> Enter username for Auth
-13. <b>-p or -pass :</b> Enter password for Auth
-14. <b>-j or -join :</b> Join Multiple Files.
-15. <b>-rcf :</b> RClone additional Flags
-16. <b>-id :</b> GDrive Folder id or link
-17. <b>-index:</b> Index url for gdrive_arg
-18. <b>-c or -category :</b> Gdrive category to Upload, Specific Name (case insensitive)
-19. <b>-ud or -dump :</b> Dump category to Upload, Specific Name (case insensitive) or chat_id or chat_username
-20. <b>-ss or -screenshots :</b> Generate Screenshots for Leeched Files
-21. <b>-t or -thumb :</b> Custom Thumb for Specific Leech
+1. <b>-n atau -name :</b> Mengganti nama berkas.
+
+2. <b>-z atau -zip :</b> Meng-zip berkas atau Tautan
+
+3. <b>-e atau -extract atau -uz atau -unzip :</b> Mengekstrak/Mem-unzip berkas dari Arsip
+
+4. <b>-up atau -upload :</b> Mengunggah ke Drive atau RClone atau DDL Anda
+
+6. <b>-b atau -bulk :</b> Mengunduh tautan massal.
+
+7. <b>-i :</b> Mengunduh beberapa tautan dengan membalas
+
+9. <b>-m atau -sd atau -samedir :</b> Mengunduh beberapa tautan dalam direktori unggah yang sama.
+
+10. <b>-d atau -seed :</b> Benih torrent Bittorrent. 11. <b>-s atau -select :</b> Pilih berkas dari torrent melalui Bittorrent
+12. <b>-u atau -user :</b> Masukkan nama pengguna untuk Auth
+13. <b>-p atau -pass :</b> Masukkan kata sandi untuk Auth
+14. <b>-j atau -join :</b> Gabungkan Beberapa Berkas. 15. <b>-rcf :</b> Bendera tambahan RClone
+16. <b>-id :</b> ID atau tautan Folder GDrive
+17. <b>-index:</b> Url indeks untuk gdrive_arg
+18. <b>-c atau -category :</b> Kategori Gdrive yang akan diunggah, Nama Tertentu (tanpa memperhatikan huruf besar/kecil)
+19. <b>-ud atau -dump :</b> Kategori Dump yang akan diunggah, Nama Tertentu (tanpa memperhatikan huruf besar/kecil) atau chat_id atau chat_username
+20. <b>-ss atau -screenshots :</b> Hasilkan Tangkapan Layar untuk File yang Diambil Secara Leech
+21. <b>-t atau -thumb :</b> Thumb Kustom untuk Leech Tertentu
 """, """
-➲ <b><i>By along the cmd</i></b>:
-<code>/cmd</code> link -n new name
+➲ <b><i>Dengan di sepanjang cmd</i></b>:
+<code>/cmd</code> link -n nama baru
 
-➲ <b><i>By replying to link/file</i></b>:
+➲ <b><i>Dengan membalas link/file</i></b>:
 <code>/cmd</code> -n new name -z -e -up upload_destination
 
-➲ <b><i>Custom New Name</i></b>: -n or -name
+➲ <b><i>Nama Baru Kustom</i></b>: -n atau -name
 <code>/cmd</code> link -n new name
-<b>NOTES</b>: Doesn't work with torrents.
+<b>CATATAN</b>: Tidak berfungsi dengan torrent.
 
-➲ <b><i>Direct Link Authorization</i></b>: -u -p or -user -pass
+➲ <b><i>Otorisasi Tautan Langsung</i></b>: -u -p atau -user -pass
 <code>/cmd</code> link -u username -p password
 
-➲ <b><i>Direct link custom headers</i></b>: -h or -headers
+➲ <b><i>Header kustom tautan langsung</i></b>: -h atau -headers
 <code>/cmd</code> link -h key: value key1: value1
 
-➲ <b><i>Screenshot Generation</b>: -ss or -screenshots
-<code>/cmd</code> link -ss number ,Screenshots for each Video File
+➲ <b><i>Pembuatan Cuplikan Layar</b>: -ss atau -screenshots
+<code>/cmd</code> link -ss number, Cuplikan Layar untuk setiap File Video
 
-➲ <b><i>Custom Thumbnail</b>: -t or -thumb
+➲ <b><i>Thumnail Kustom</b>: -t atau -thumb
 <code>/cmd</code> link -t tglink|dl_link
-<b>Direct Link:</b> dl_link specifies download link, where it is Image url
-<b>Tg Link:</b> Give Public/Private/Super Link to download Image from Tg
+<b>Tautan Langsung:</b> dl_link menentukan tautan unduhan, di mana ia adalah URL Gambar
+<b>Tautan Tg:</b> Berikan Tautan Publik/Pribadi/Super untuk mengunduh Gambar dari Tg
 
-➲ <b><i>Extract / Zip</i></b>: -uz -z or -zip -unzip or -e -extract
-<code>/cmd</code> link -e password (extract password protected)
-<code>/cmd</code> link -z password (zip password protected)
-<code>/cmd</code> link -z password -e (extract and zip password protected)
-<code>/cmd</code> link -e password -z password (extract password protected and zip password protected)
-<b>NOTES:</b> When both extract and zip added with cmd it will extract first and then zip, so always extract first
+➲ <b><i>Ekstrak / Zip</i></b>: -uz -z atau -zip -unzip atau -e -ekstrak
+<code>/cmd</code> link -e password (ekstrak dilindungi kata sandi)
+<code>/cmd</code> link -z password (zip dilindungi kata sandi)
+<code>/cmd</code> link -z password -e (ekstrak dan zip dilindungi kata sandi)
+<code>/cmd</code> link -e password -z password (ekstrak dilindungi kata sandi dan zip dilindungi kata sandi)
+<b>CATATAN:</b> Ketika ekstrak dan zip ditambahkan dengan cmd, maka akan mengekstrak terlebih dahulu lalu zip, jadi selalu ekstrak terlebih dahulu
 
-➲ <b><i>qBittorrent selection</i></b>: -s or -select
-<code>/cmd</code> link -s or by replying to file/link
+➲ <b><i>qPemilihan Bittorrent</i></b>: -s atau -select
+<code>/cmd</code> link -s atau dengan membalas file/link
 
-➲ <b><i>qBittorrent / Aria2 Seed</i></b>: -d or -seed
-<code>/cmd</code> link -d ratio:seed_time or by replying to file/link
-To specify ratio and seed time add -d ratio:time. Ex: -d 0.7:10 (ratio and time) or -d 0.7 (only ratio) or -d :10 (only time) where time in minutes.
+➲ <b><i>qBittorrent / Aria2 Seed</i></b>: -d atau -seed
+<code>/cmd</code> link -d ratio:seed_time atau dengan membalas file/link
+Untuk menentukan rasio dan waktu seed tambahkan -d ratio:time. Misalnya: -d 0.7:10 (rasio dan waktu) atau -d 0.7 (hanya rasio) atau -d :10 (hanya waktu) di mana waktu dalam menit.
 
-➲ <b><i>Multi links only by replying to first link/file</i></b>: -i
-<code>/cmd</code> -i 10(number of links/files)
+➲ <b><i>Multi tautan hanya dengan membalas tautan/file pertama</i></b>: -i
+<code>/cmd</code> -i 10(jumlah tautan/file)
 
-➲ <b><i>Multi links within same upload directory only by replying to first link/file</i></b>: -m or -sd or -samedir
-<code>/cmd</code> -i 10(number of links/files) -m folder name (multi message)
-<code>/cmd</code> -b -m folder name (bulk-message/file)
+➲ <b><i>Multi tautan dalam direktori unggah yang sama hanya dengan membalas tautan/file pertama</i></b>: -m atau -sd atau -samedir
+<code>/cmd</code> -i 10(jumlah tautan/file) -m nama folder (multi pesan)
+<code>/cmd</code> -b -m nama folder (pesan massal/file)
 
-➲ <b><i>Upload Custom Drive:</i></b> -id & -index(Optional)
-<code>/{cmd}</code> -id <code>drive_folder_link</code> or <code>drive_id</code> -index <code>https://example.com/0:</code>
-Here, drive_id must be folder id or folder link and index must be url else it will not accept.
+➲ <b><i>Unggah Drive Kustom:</i></b> -id & -indeks(Opsional)
+<code>/{cmd}</code> -id <code>drive_folder_link</code> atau <code>drive_id</code> -indeks <code>https://example.com/0:</code>
+Di sini, drive_id harus berupa folder id atau tautan folder dan indeks harus berupa url, jika tidak, maka tidak akan diterima.
 
-➲ <b><i>Custom Category Select:</i></b> -c or -category
+➲ <b><i>Pilih Kategori Kustom:</i></b> -c atau -category
 <code>/{cmd}</code> -c <code>category_name</code>
-This works for both Bot Categories as well as UserTDs (if enabled)
-You can also select Drive Upload from Buttons if having more than 1 and this arg not specified
+Ini berfungsi untuk Kategori Bot maupun UserTD (jika diaktifkan)
+Anda juga dapat memilih Unggah Drive dari Tombol jika memiliki lebih dari 1 dan argumen ini tidak ditentukan
 
-➲ <b><i>Custom Dump Select:</i></b> -ud or -dump
-<code>/{cmd}</code> -ud <code>dump_name</code> or <code>@username</code> or <code>-100xxxxxx chat_id</code> or all
-You can also select Dump Chat from Buttons if having more than 1 and this arg not specified
-You -ud all for Uploading in all Dump Chats of yours
-Make Sure Bot is already Admin else it will not accept.
+➲ <b><i>Pilih Dump Kustom:</i></b> -ud atau -dump
+<code>/{cmd}</code> -ud <code>dump_name</code> atau <code>@username</code> atau <code>-100xxxxxx chat_id</code> atau semua
+Anda juga dapat memilih Dump Chat dari Tombol jika memiliki lebih dari 1 dan argumen ini tidak ditentukan
+Anda -ud semua untuk Mengunggah di semua Dump Chat milik Anda
+Pastikan Bot sudah menjadi Admin, jika tidak, maka tidak akan diterima.
 
-➲ <b><i>Custom Upload</i></b>: -up or -upload
-<code>/cmd</code> link -up <code>rcl</code> (To select rclone config, remote and path)
+➲ <b><i>Unggahan Kustom</i></b>: -up atau -upload
+<code>/cmd</code> link -up <code>rcl</code> (Untuk memilih konfigurasi rclone, remote, dan jalur)
 <code>/cmd</code> link -up <code>ddl</code>
-You can directly add the upload path: -up remote:dir/subdir
+Anda dapat langsung menambahkan jalur unggah: -up remote:dir/subdir
 
-If DEFAULT_UPLOAD is `rc` then you can pass up: `gd` to upload using gdrive tools to GDRIVE_ID.
-If DEFAULT_UPLOAD is `gd` then you can pass up: `rc` to upload to RCLONE_PATH.
-If DEFAULT_UPLOAD is `ddl` then you can pass up: `rc` or `gd` to upload to RCLONE_PATH or GDRIVE_ID
-If you want to add path manually from your config (uploaded from usetting) add <code>mrcc:</code> before the path without space
+Jika DEFAULT_UPLOAD adalah `rc` maka Anda dapat meneruskan: `gd` untuk mengunggah menggunakan alat gdrive ke GDRIVE_ID.
+Jika DEFAULT_UPLOAD adalah `gd` maka Anda dapat meneruskan: `rc` untuk mengunggah ke RCLONE_PATH.
+Jika DEFAULT_UPLOAD adalah `ddl` maka Anda dapat meneruskan: `rc` atau `gd` untuk mengunggah ke RCLONE_PATH atau GDRIVE_ID
+Jika Anda ingin menambahkan jalur secara manual dari konfigurasi Anda (diunggah dari pengaturan), tambahkan <code>mrcc:</code> sebelum jalur tanpa spasi
 <code>/cmd</code> link -up <code>mrcc:</code>main:dump
 
-➲ <b><i>RClone Flags</i></b>: -rcf
+➲ <b><i>Bendera RClone</i></b>: -rcf
 <code>/cmd</code> link|path|rcl -up path|rcl -rcf --buffer-size:8M|--drive-starred-only|key|key:value
-This will override all other flags except --exclude
-Check here all <a href='https://rclone.org/flags/'>RcloneFlags</a>.
+Ini akan mengganti semua bendera lain kecuali --exclude
+Centang di sini semua <a href='https://rclone.org/flags/'>RcloneFlags</a>.
 
-➲ <b><i>Bulk Download</i></b>: -b or -bulk
-Bulk can be used by text message and by replying to text file contains links seperated by new line.
-You can use it only by reply to message(text/file).
-All options should be along with link!
-<b>Some Examples:</b>
+➲ <b><i>Unduhan Massal</i></b>: -b atau -bulk
+Bulk dapat digunakan melalui pesan teks dan dengan membalas file teks yang berisi tautan yang dipisahkan oleh baris baru.
+Anda dapat menggunakannya hanya dengan membalas pesan (teks/file).
+Semua opsi harus disertai tautan!
+<b>Beberapa Contoh:</b>
 link1 -n new name -up remote1:path1 -rcf |key:value|key:value
 link2 -z -n new name -up remote2:path2
 link3 -uz -n new name -up remote2:path2
-<b>NOTES:</b> You can't add -m arg for some links only, do it for all links or use multi without bulk!
-Reply to this example by this cmd <code>/cmd</code> -b(bulk)
-You can set start and end of the links from the bulk like seed, with -b start:end or only end by -b :end or only start by -b start. The default start is from zero(first link) to inf.
+<b>CATATAN:</b> Anda tidak dapat menambahkan argumen -m hanya untuk beberapa tautan, lakukan untuk semua tautan atau gunakan multi tanpa bulk!
+Balas contoh ini dengan cmd <code>/cmd</code> ini -b(bulk)
+Anda dapat mengatur awal dan akhir tautan dari bulk seperti seed, dengan -b start:end atau hanya diakhiri dengan -b :end atau hanya dimulai dengan -b start. Awal default adalah dari nol (tautan pertama) hingga inf.
+➲ <b><i>Gabungkan File yang Dipisah</i></b>: -j atau -join
+Opsi ini hanya akan berfungsi sebelum mengekstrak dan zip, jadi biasanya akan digunakan dengan argumen -m (samedir)
+Opsi ini bukan Penggabungan Dua tautan/file. <b>Dengan Balasan:</b>
+<code>/cmd</code> -i 3 -j -m nama folder
+<code>/cmd</code> -b -j -m nama folder
+Jika Anda memiliki tautan yang telah membagi file:
+<code>/cmd</code> tautan -j
 
-➲ <b><i>Join Splitted Files</i></b>: -j or -join
-This option will only work before extract and zip, so mostly it will be used with -m argument (samedir)
-This option is not Merging of Two links/files.
-<b>By Reply:</b>
-<code>/cmd</code> -i 3 -j -m folder name
-<code>/cmd</code> -b -j -m folder name
-If you have link which has splitted files:
-<code>/cmd</code> link -j
+➲ <b><i>Unduhan RClone</i></b>:
+Perlakukan jalur rclone persis seperti tautan
+<code>/cmd</code> main:dump/ubuntu.iso atau <code>rcl</code>(Untuk memilih konfigurasi, jarak jauh, dan jalur)
+Pengguna dapat menambahkan rclone mereka sendiri dari pengaturan pengguna
 
-➲ <b><i>RClone Download</i></b>:
-Treat rclone paths exactly like links
-<code>/cmd</code> main:dump/ubuntu.iso or <code>rcl</code>(To select config, remote and path)
-Users can add their own rclone from user settings
-
-If you want to add path manually from your config add <code>mrcc:</code> before the path without space
+Jika Anda ingin menambahkan jalur secara manual dari konfigurasi Anda, tambahkan <code>mrcc:</code> sebelum jalur tanpa spasi
 <code>/cmd</code> <code>mrcc:</code>main:dump/ubuntu.iso
 
-➲ <b><i>TG Links</i></b>:
-Treat tg links like any direct link
-Some links need user access so sure you must add USER_SESSION_STRING for it.
-<b><u>Types of links:</u></b>
-• <b>Public:</b> <code>https://t.me/channel_name/message_id</code>
-• <b>Private:</b> <code>tg://openmessage?user_id=xxxxxx&message_id=xxxxx</code>
+➲ <b><i>Tautan TG</i></b>:
+Perlakukan tautan tg seperti tautan langsung apa pun
+Beberapa tautan memerlukan akses pengguna, jadi pastikan Anda menambahkan USER_SESSION_STRING untuknya.
+
+<b><u>Jenis tautan:</u></b>
+• <b>Publik:</b> <code>https://t.me/channel_name/message_id</code>
+• <b>Pribadi:</b> <code>tg://openmessage?user_id=xxxxxx&message_id=xxxxx</code>
 • <b>Super:</b> <code>https://t.me/c/channel_id/message_id</code>
 
-➲ <b>NOTES:</b>
-1. Commands that start with <b>qb</b> are ONLY for torrents.
-"""]
+➲ <b>CATATAN:</b>
+1. Perintah yang dimulai dengan <b>qb</b> HANYA untuk torrent.
+
+""]
 
 RSS_HELP_MESSAGE = """
 ➲ <b>Format to adding feed url(s):</b>
