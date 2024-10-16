@@ -368,8 +368,11 @@ def is_url(url):
     return bool(re_match(URL_REGEX, url))
 
 
-def is_gdrive_link(url):
+def is_gdrive_linkWORK(url):
     return "drive.google.com" in url
+
+def is_gdrive_link(url):
+    return "drive.google.com" in url or "drive.usercontent.google.com" in url
 
 
 def is_telegram_link(url):
