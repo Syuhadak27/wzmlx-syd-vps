@@ -403,7 +403,7 @@ async def forcesub(message, ids, button=None):
     if join_button:
         if button is None:
             button = ButtonMaker()
-        _msg = "You haven't joined our channel yet!"
+        _msg = "Kamu belum bergabung di channel kita, silahkan gabung ke channel kita dan ulangi task lagi"
         for key, value in join_button.items():
             button.ubutton(f'Join {key}', value, 'footer')
     return _msg, button
