@@ -351,7 +351,7 @@ async def turn_page(data):
 
 
 def get_readable_time(seconds):
-    periods = [('d', 86400), ('h', 3600), ('m', 60), ('s', 1)]
+    periods = [('hari ', 86400), ('jam ', 3600), ('menit ', 60), ('detik ', 1)]
     result = ''
     for period_name, period_seconds in periods:
         if seconds >= period_seconds:
