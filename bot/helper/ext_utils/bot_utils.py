@@ -44,15 +44,15 @@ PAGE_NO      = 1
 
 
 class MirrorStatus:
-    STATUS_UPLOADING   = "Upload"
-    STATUS_DOWNLOADING = "Download"
-    STATUS_CLONING     = "Clone"
-    STATUS_QUEUEDL     = "QueueDL"
-    STATUS_QUEUEUP     = "QueueUp"
-    STATUS_PAUSED      = "Pause"
-    STATUS_ARCHIVING   = "Archive"
-    STATUS_EXTRACTING  = "Extract"
-    STATUS_SPLITTING   = "Split"
+    STATUS_UPLOADING   = "📤Upload"
+    STATUS_DOWNLOADING = "📥Download"
+    STATUS_CLONING     = "🔀Clone"
+    STATUS_QUEUEDL     = "⏳QueueDL"
+    STATUS_QUEUEUP     = "⏳QueueUp"
+    STATUS_PAUSED      = "⏸️Pause"
+    STATUS_ARCHIVING   = "📦Archive"
+    STATUS_EXTRACTING  = "⚒️Extract"
+    STATUS_SPLITTING   = "✂️Split"
     STATUS_CHECKING    = "CheckUp"
     STATUS_SEEDING     = "Seed"
 
@@ -147,7 +147,7 @@ def get_progress_bar_stringKOTAK(pct):
     p_str += '□' * (12 - cFull)
     return f"[{p_str}]"
 
-def get_progress_bar_string(pct):
+def get_progress_bar_stringBULAT(pct):
     if isinstance(pct, str):
         pct = float(pct.strip("%"))
     p = min(
@@ -157,6 +157,20 @@ def get_progress_bar_string(pct):
     cFull = int(p // 10)
     p_str = "●" * cFull
     p_str += "◌" * (10 - cFull)
+    return f"{p_str}"
+    
+def get_progress_bar_string(pct):
+    BAR_PENUH = config_dict['BAR_PENUH']
+    BAR_KOSONG = config_dict['BAR_KOSONG']
+    if isinstance(pct, str):
+        pct = float(pct.strip("%"))
+    p = min(
+        max(pct, 0),
+        100
+    )
+    cFull = int(p // 10)
+    p_str = BAR_PENUH * cFull
+    p_str += BAR_KOSONG * (10 - cFull)
     return f"{p_str}"
 
 
