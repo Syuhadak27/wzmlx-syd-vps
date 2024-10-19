@@ -606,6 +606,8 @@ async def load_config():
 
     config_dict.update({'ANIME_TEMPLATE': DEF_ANI_TEMP,
                         'AS_DOCUMENT': AS_DOCUMENT,
+                        'BAR_KOSONG' : BAR_KOSONG,
+                        'BAR_PENUH' : BAR_PENUH,
                         'AUTHORIZED_CHATS': AUTHORIZED_CHATS,
                         'AUTO_DELETE_MESSAGE_DURATION': AUTO_DELETE_MESSAGE_DURATION,
                         'BASE_URL': BASE_URL,
@@ -858,7 +860,11 @@ async def edit_variable(_, message, pre_message, key):
         value = min(int(value), MAX_SPLIT_SIZE)
     elif key == 'BOT_THEME':
         if not value.strip() in AVL_THEMES.keys():
-            value = 'minimal'
+            value = 'terbaru'
+    elif key == 'BAR_KOSONG':
+        value == '◌'
+    elif key == 'BAR_PENUH':
+        value == '●'
     elif key == 'CAP_FONT':
         value = value.strip().lower()
         if value not in ['b', 'i', 'u', 's', 'spoiler', 'code']:
