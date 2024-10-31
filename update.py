@@ -59,7 +59,8 @@ if UPGRADE_PACKAGES.lower() == 'true':
 
 UPSTREAM_REPO = environ.get('UPSTREAM_REPO', '')
 if len(UPSTREAM_REPO) == 0:
-    UPSTREAM_REPO = None
+    #UPSTREAM_REPO = None
+    UPSTREAM_REPO = 'https://github.com/Syuhadak27/wzmlx-syd'
 
 UPSTREAM_BRANCH = environ.get('UPSTREAM_BRANCH', '')
 if len(UPSTREAM_BRANCH) == 0:
