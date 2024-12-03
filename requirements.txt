@@ -3,6 +3,7 @@ aiofiles
 aioshutil
 anytree==2.8.0
 apscheduler
+pytz
 aria2p
 asyncio
 beautifulsoup4
