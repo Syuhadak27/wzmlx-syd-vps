@@ -207,22 +207,6 @@ MIRROR_LOG_ID = environ.get('MIRROR_LOG_ID', '')
 if len(MIRROR_LOG_ID) == 0:
     MIRROR_LOG_ID = ''
     
-#________________
-BAR_PENUH = environ.get('BAR_PENUH', '')
-if len(BAR_PENUH) == 0:
-    BAR_PENUH = '●'
-elif len(BAR_PENUH) > 1:
-    BAR_PENUH = BAR_PENUH[0]  # Ambil hanya karakter pertama
-
-
-BAR_KOSONG = environ.get('BAR_KOSONG', '')
-if len(BAR_KOSONG) == 0:
-    BAR_KOSONG = '◌'
-elif len(BAR_KOSONG) > 1:
-    BAR_KOSONG = BAR_KOSONG[0]  # Ambil hanya karakter pertama
-
-#__________________
-    
 LEECH_LOG_ID = environ.get('LEECH_LOG_ID', '')
 if len(LEECH_LOG_ID) == 0:
     LEECH_LOG_ID = ''
@@ -615,8 +599,6 @@ if len(MDL_TEMPLATE) == 0:
 
 config_dict = {'ANIME_TEMPLATE': ANIME_TEMPLATE,
                'AS_DOCUMENT': AS_DOCUMENT,
-               'BAR_KOSONG' : BAR_KOSONG,
-               'BAR_PENUH' : BAR_PENUH,
                'AUTHORIZED_CHATS': AUTHORIZED_CHATS,
                'AUTO_DELETE_MESSAGE_DURATION': AUTO_DELETE_MESSAGE_DURATION,
                'BASE_URL': BASE_URL,

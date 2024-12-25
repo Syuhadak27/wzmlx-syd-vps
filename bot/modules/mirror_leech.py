@@ -40,6 +40,7 @@ async def _mirror_leech(client, message, isQbit=False, isLeech=False, sameDir=No
     arg_base = {'link': '', 
                 '-i': '0',
                 '-m': '', '-sd': '', '-samedir': '',
+                '-d': False, '-seed': False,
                 '-j': False, '-join': False,
                 '-s': False, '-select': False,
                 '-b': False, '-bulk': False,
@@ -67,7 +68,7 @@ async def _mirror_leech(client, message, isQbit=False, isLeech=False, sameDir=No
     
     link          = args['link']
     folder_name   = args['-m'] or args['-sd'] or args['-samedir']
-    seed          = False
+    seed          = args['-d'] or args['-seed']
     join          = args['-j'] or args['-join']
     select        = args['-s'] or args['-select']
     isBulk        = args['-b'] or args['-bulk']

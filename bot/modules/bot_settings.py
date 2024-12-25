@@ -33,8 +33,6 @@ STATE = 'view'
 handler_dict = {}
 default_values = {'AUTO_DELETE_MESSAGE_DURATION': 30,
                   'DEFAULT_UPLOAD': 'gd',
-                  'BAR_KOSONG': '◌',
-                  'BAR_PENUH': '●',
                   'DOWNLOAD_DIR': '/usr/src/app/downloads/',
                   'LEECH_SPLIT_SIZE': MAX_SPLIT_SIZE,
                   'RSS_DELAY': 600,
@@ -296,23 +294,6 @@ async def load_config():
 
     WEB_PINCODE = environ.get('WEB_PINCODE', '')
     WEB_PINCODE = WEB_PINCODE.lower() == 'true'
-    #___________________________MODIF DISINI________________________________
-    BAR_PENUH = environ.get('BAR_PENUH', '')
-    if len(BAR_PENUH) == 0:
-        BAR_PENUH = '●'  # Indentasi benar untuk blok if
-    elif len(BAR_PENUH) > 1:
-        BAR_PENUH = BAR_PENUH[0]  # Ambil karakter pertama jika lebih dari 1 karakter
- # Ambil hanya karakter pertama
-
-
-    BAR_KOSONG = environ.get('BAR_KOSONG', '')
-    if len(BAR_KOSONG) == 0:
-        BAR_KOSONG = '◌'
-    elif len(BAR_KOSONG) > 1:
-        BAR_KOSONG = BAR_KOSONG[0]  # Ambil hanya karakter pertama
-
-
-#__________________________AKHIR MOD____________________________
 
     AS_DOCUMENT = environ.get('AS_DOCUMENT', '')
     AS_DOCUMENT = AS_DOCUMENT.lower() == 'true'
@@ -606,8 +587,6 @@ async def load_config():
 
     config_dict.update({'ANIME_TEMPLATE': DEF_ANI_TEMP,
                         'AS_DOCUMENT': AS_DOCUMENT,
-                        'BAR_KOSONG' : BAR_KOSONG,
-                        'BAR_PENUH' : BAR_PENUH,
                         'AUTHORIZED_CHATS': AUTHORIZED_CHATS,
                         'AUTO_DELETE_MESSAGE_DURATION': AUTO_DELETE_MESSAGE_DURATION,
                         'BASE_URL': BASE_URL,
@@ -860,11 +839,7 @@ async def edit_variable(_, message, pre_message, key):
         value = min(int(value), MAX_SPLIT_SIZE)
     elif key == 'BOT_THEME':
         if not value.strip() in AVL_THEMES.keys():
-            value = 'terbaru'
-    elif key == 'BAR_KOSONG':
-        value == '◌'
-    elif key == 'BAR_PENUH':
-        value == '●'
+            value = 'minimal'
     elif key == 'CAP_FONT':
         value = value.strip().lower()
         if value not in ['b', 'i', 'u', 's', 'spoiler', 'code']:

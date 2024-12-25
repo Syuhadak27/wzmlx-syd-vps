@@ -26,7 +26,7 @@ async def authorize(client, message):
     else:
         id_ = message.chat.id
     if id_ in user_data and user_data[id_].get('is_auth'):
-        msg = 'Ijin sudah di berikan tidak perlu di ijinkan ulang'
+        msg = 'Already Authorized!'
         if tid_:
             if tid_ not in (tids_ := user_data[id_].get('topic_ids', [])):
                 tids_.append(tid_)
@@ -42,7 +42,7 @@ async def authorize(client, message):
             update_user_ldata(id_, 'topic_ids', [tid_])
             msg = 'Topic Authorized!'
         else:
-            msg = 'Sukses memberikan ijin'
+            msg = 'Authorized'
         if DATABASE_URL:
             await DbManger().update_user_data(id_)
     await sendMessage(message, msg)
@@ -72,9 +72,9 @@ async def unauthorize(client, message):
             update_user_ldata(id_, 'is_auth', False)
         if DATABASE_URL:
             await DbManger().update_user_data(id_)
-        msg = 'Ijin di cabut'
+        msg = 'Unauthorized'
     else:
-        msg = 'Ijin sudah di cabut, tidak perlu di cabut ulang'
+        msg = 'Already Unauthorized!'
     await sendMessage(message, msg)
 
 

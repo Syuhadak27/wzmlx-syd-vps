@@ -44,15 +44,15 @@ PAGE_NO      = 1
 
 
 class MirrorStatus:
-    STATUS_UPLOADING   = "📤Upload"
-    STATUS_DOWNLOADING = "📥Download"
-    STATUS_CLONING     = "🔀Clone"
-    STATUS_QUEUEDL     = "⏳QueueDL"
-    STATUS_QUEUEUP     = "⏳QueueUp"
-    STATUS_PAUSED      = "⏸️Pause"
-    STATUS_ARCHIVING   = "📦Archive"
-    STATUS_EXTRACTING  = "⚒️Extract"
-    STATUS_SPLITTING   = "✂️Split"
+    STATUS_UPLOADING   = "Upload"
+    STATUS_DOWNLOADING = "Download"
+    STATUS_CLONING     = "Clone"
+    STATUS_QUEUEDL     = "QueueDL"
+    STATUS_QUEUEUP     = "QueueUp"
+    STATUS_PAUSED      = "Pause"
+    STATUS_ARCHIVING   = "Archive"
+    STATUS_EXTRACTING  = "Extract"
+    STATUS_SPLITTING   = "Split"
     STATUS_CHECKING    = "CheckUp"
     STATUS_SEEDING     = "Seed"
 
@@ -136,7 +136,7 @@ def handleIndex(index, dic):
         else: break
     return index
 
-def get_progress_bar_stringKOTAK(pct):
+def get_progress_bar_string(pct):
     pct = float(str(pct).strip('%'))
     p = min(max(pct, 0), 100)
     cFull = int(p // 8)
@@ -146,32 +146,6 @@ def get_progress_bar_stringKOTAK(pct):
         p_str += ['▤', '▥', '▦', '▧', '▨', '▩', '■'][cPart]
     p_str += '□' * (12 - cFull)
     return f"[{p_str}]"
-
-def get_progress_bar_stringBULAT(pct):
-    if isinstance(pct, str):
-        pct = float(pct.strip("%"))
-    p = min(
-        max(pct, 0),
-        100
-    )
-    cFull = int(p // 10)
-    p_str = "●" * cFull
-    p_str += "◌" * (10 - cFull)
-    return f"{p_str}"
-    
-def get_progress_bar_string(pct):
-    BAR_PENUH = config_dict['BAR_PENUH']
-    BAR_KOSONG = config_dict['BAR_KOSONG']
-    if isinstance(pct, str):
-        pct = float(pct.strip("%"))
-    p = min(
-        max(pct, 0),
-        100
-    )
-    cFull = int(p // 10)
-    p_str = BAR_PENUH * cFull
-    p_str += BAR_KOSONG * (10 - cFull)
-    return f"{p_str}"
 
 
 def get_all_versions():
@@ -241,13 +215,11 @@ def get_readable_message():
         elapsed = time() - download.message.date.timestamp()
         msg += BotTheme('STATUS_NAME', Name="Task is being Processed!" if config_dict['SAFE_MODE'] and elapsed >= config_dict['STATUS_UPDATE_INTERVAL'] else escape(f'{download.name()}'))
         if download.status() not in [MirrorStatus.STATUS_SPLITTING, MirrorStatus.STATUS_SEEDING]:
-            msg += BotTheme('STATUS', Status=download.status(), Url=msg_link)
             msg += BotTheme('BAR', Bar=f"{get_progress_bar_string(download.progress())} {download.progress()}")
             msg += BotTheme('PROCESSED', Processed=f"{download.processed_bytes()} of {download.size()}")
-            msg += BotTheme('SPEED', Speed=download.speed())
-            #msg += BotTheme('STATUS', Status=download.status(), Url=msg_link)
+            msg += BotTheme('STATUS', Status=download.status(), Url=msg_link)
             msg += BotTheme('ETA', Eta=download.eta())
-            #msg += BotTheme('SPEED', Speed=download.speed())
+            msg += BotTheme('SPEED', Speed=download.speed())
             msg += BotTheme('ELAPSED', Elapsed=get_readable_time(elapsed))
             msg += BotTheme('ENGINE', Engine=download.eng())
             msg += BotTheme('STA_MODE', Mode=download.upload_details['mode'])
@@ -351,7 +323,7 @@ async def turn_page(data):
 
 
 def get_readable_time(seconds):
-    periods = [('hari ', 86400), ('jam ', 3600), ('menit ', 60), ('detik ', 1)]
+    periods = [('d', 86400), ('h', 3600), ('m', 60), ('s', 1)]
     result = ''
     for period_name, period_seconds in periods:
         if seconds >= period_seconds:
@@ -368,11 +340,8 @@ def is_url(url):
     return bool(re_match(URL_REGEX, url))
 
 
-def is_gdrive_linkWORK(url):
-    return "drive.google.com" in url
-
 def is_gdrive_link(url):
-    return "drive.google.com" in url or "drive.usercontent.google.com" in url
+    return "drive.google.com" in url
 
 
 def is_telegram_link(url):
