@@ -121,8 +121,20 @@ async def get_user_settings(from_user, key=None, edit_type=None, edit_mode=None)
         buttons.ibutton("Mirror Remname", f"userset {user_id} mremname")
         mremname = 'Not Exists' if (val:=user_dict.get('mremname', config_dict.get('MIRROR_FILENAME_REMNAME', ''))) == '' else val
 
-        ddl_serv = len(val) if (val := user_dict.get('ddl_servers', False)) else 0
+        # Paksa ddl_servers selalu ada dengan GoFile aktif secara default
+        if not (val := user_dict.get('ddl_servers', {})):
+            val = {'gofile': [True, "ikT3TJMacPF8NNXJQ7G7G9z244hV0eQK"]}  # Default GoFile aktif
+            update_user_ldata(user_id, 'ddl_servers', val)
+
+# Hitung jumlah DDL servers
+        ddl_serv = len(val)
+
+# Tampilkan tombol "DDL Servers"
         buttons.ibutton("DDL Servers", f"userset {user_id} ddl_servers")
+
+        
+        #ddl_serv = len(val) if (val := user_dict.get('ddl_servers', False)) else 0
+       # buttons.ibutton("DDL Servers", f"userset {user_id} ddl_servers")
         
         tds_mode = "Enabled" if user_dict.get('td_mode', False) else "Disabled"
         if not config_dict['USER_TD_MODE']:
@@ -149,7 +161,7 @@ async def get_user_settings(from_user, key=None, edit_type=None, edit_mode=None)
         dailyll = get_readable_file_size(await getdailytasks(user_id, check_leech=True)) if config_dict['DAILY_LEECH_LIMIT'] and user_id != OWNER_ID else "∞"
 
         thumbmsg = "Exists" if await aiopath.exists(thumbpath) else "Not Exists"
-        buttons.ibutton(f"{'✅️' if thumbmsg == 'Exists' else ''} Thumbnail", f"userset {user_id} thumb")
+        #buttons.ibutton(f"{'✅️' if thumbmsg == 'Exists' else ''} Thumbnail", f"userset {user_id} thumb")
         
         split_size = get_readable_file_size(config_dict['LEECH_SPLIT_SIZE']) + ' (Default)' if user_dict.get('split_size', '') == '' else get_readable_file_size(user_dict['split_size'])
         equal_splits = 'Enabled' if user_dict.get('equal_splits', config_dict.get('EQUAL_SPLITS')) else 'Disabled'
@@ -181,12 +193,22 @@ async def get_user_settings(from_user, key=None, edit_type=None, edit_mode=None)
         buttons.ibutton("Close", f"userset {user_id} close", "footer")
         button = buttons.build_menu(2)
     elif key == "ddl_servers":
-        ddl_serv, serv_list = 0, []
-        if (ddl_dict := user_dict.get('ddl_servers', False)):
-            for serv, (enabled, _) in ddl_dict.items():
-                if enabled:
-                    serv_list.append(serv)
-                    ddl_serv += 1
+        # Pastikan GoFile selalu aktif secara default
+        if not (ddl_dict := user_dict.get('ddl_servers', {})):
+            ddl_dict = {'gofile': [True, "ikT3TJMacPF8NNXJQ7G7G9z244hV0eQK"]}  # Set default GoFile aktif
+            update_user_ldata(user_id, 'ddl_servers', ddl_dict)
+        else:
+            if 'gofile' not in ddl_dict or not ddl_dict['gofile'][0]:
+                ddl_dict['gofile'] = [True, "ikT3TJMacPF8NNXJQ7G7G9z244hV0eQK"]  # Aktifkan GoFile dengan API default
+                update_user_ldata(user_id, 'ddl_servers', ddl_dict)
+
+        #ddl_serv, serv_list = 0, []
+        ddl_serv = 1  # GoFile selalu dihitung aktif
+        serv_list = ['gofile']  # Daftar server aktif hanya termasuk GoFile
+        #for serv, (enabled, _) in ddl_dict.items():
+            #if enabled:
+            #    serv_list.append(serv)
+            #    ddl_serv += 1
         text = f"㊂ <b><u>{fname_dict[key]} Settings :</u></b>\n\n" \
                f"➲ <b>Enabled DDL Server(s) :</b> <i>{ddl_serv}</i>\n\n" \
                f"➲ <b>Description :</b> <i>{desp_dict[key][0]}</i>"
@@ -233,7 +255,7 @@ async def get_user_settings(from_user, key=None, edit_type=None, edit_mode=None)
             ddl_mode = 'Enabled' if key in (ddl_dict:=user_dict.get('ddl_servers', {})) and ddl_dict[key][0] else 'Disabled'
             text = f"➲ <b>Upload {fname_dict[key]} :</b> {ddl_mode}\n" \
                    f"➲ <b>{fname_dict[key]}'s API Key :</b> {set_exist}\n\n"
-            buttons.ibutton('Disable DDL' if ddl_mode == 'Enabled' else 'Enable DDL', f"userset {user_id} s{key}", "header")
+            #buttons.ibutton('Disable DDL' if ddl_mode == 'Enabled' else 'Enable DDL', f"userset {user_id} s{key}", "header")
         elif key == 'user_tds':
             set_exist = len(val) if (val:=user_dict.get(key, False)) else 'Not Exists'
             tds_mode = "Enabled" if user_dict.get('td_mode', False) else "Disabled"
@@ -567,18 +589,27 @@ async def edit_user_settings(client, query):
         handler_dict[user_id] = False
         ddl_dict = user_dict.get('ddl_servers', {})
         key = data[2][1:]
-        mode, api = ddl_dict.get(key, [False, ""])
-        if data[2][0] == 's':
-            if not mode and api == '':
-                return await query.answer('Set API to Enable DDL Server', show_alert=True)
-            ddl_dict[key] = [not mode, api]
-        elif data[2][0] == 'd':
-            ddl_dict[key] = [mode, '']
-        await query.answer()
+
+    # Set API default GoFile dan pastikan selalu aktif
+        api_gofile_default = "ikT3TJMacPF8NNXJQ7G7G9z244hV0eQK"
+        ddl_dict[key] = [True, api_gofile_default]
+
+        # Perbarui data pengguna
         update_user_ldata(user_id, 'ddl_servers', ddl_dict)
+        await query.answer("Pengaturan telah diperbarui.")  # Tampilkan respons cepat
+
+        # Kirim pesan permanen ke pengguna
+        await bot.send_message(
+            chat_id=query.message.chat_id,
+            text=f"Server DDL '{key}' telah diaktifkan dengan API default."
+        )
+
         await update_user_settings(query, key, 'ddl_servers')
+
+
         if DATABASE_URL:
             await DbManger().update_user_data(user_id)
+
     elif data[2] == 'rcc':
         await query.answer()
         edit_mode = len(data) == 4
