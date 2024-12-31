@@ -24,6 +24,25 @@ from bot.helper.ext_utils.db_handler import DbManger
 from bot.helper.ext_utils.bot_utils import getdailytasks, update_user_ldata, get_readable_file_size, sync_to_async, new_thread, is_gdrive_link
 from bot.helper.mirror_utils.upload_utils.ddlserver.gofile import Gofile
 from bot.helper.themes import BotTheme
+from dotenv import load_dotenv
+import os
+
+# Tentukan jalur file config.env
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # Folder utama
+ENV_PATH = os.path.join(BASE_DIR, "config.env")
+
+# Muat variabel dari config.env
+load_dotenv(ENV_PATH)
+
+# Ambil token GoFile
+GOFILE_TOKEN = os.getenv('GOFILE_TOKEN')
+
+# Periksa apakah token berhasil dimuat
+if not GOFILE_TOKEN:
+    raise ValueError("GOFILE_TOKEN tidak ditemukan di file config.env!")
+
+
+
 
 handler_dict = {}
 desp_dict = {'rcc': ['RClone is a command-line program to sync files and directories to and from different cloud storage providers like GDrive, OneDrive...', 'Send rclone.conf. \n<b>Timeout:</b> 60 sec'],
@@ -123,7 +142,7 @@ async def get_user_settings(from_user, key=None, edit_type=None, edit_mode=None)
 
         # Paksa ddl_servers selalu ada dengan GoFile aktif secara default
         if not (val := user_dict.get('ddl_servers', {})):
-            val = {'gofile': [True, "ikT3TJMacPF8NNXJQ7G7G9z244hV0eQK"]}  # Default GoFile aktif
+            val = {'gofile': [True, GOFILE_TOKEN]}  # Default GoFile aktif
             update_user_ldata(user_id, 'ddl_servers', val)
 
 # Hitung jumlah DDL servers
@@ -195,11 +214,11 @@ async def get_user_settings(from_user, key=None, edit_type=None, edit_mode=None)
     elif key == "ddl_servers":
         # Pastikan GoFile selalu aktif secara default
         if not (ddl_dict := user_dict.get('ddl_servers', {})):
-            ddl_dict = {'gofile': [True, "ikT3TJMacPF8NNXJQ7G7G9z244hV0eQK"]}  # Set default GoFile aktif
+            ddl_dict = {'gofile': [True, GOFILE_TOKEN]}  # Set default GoFile aktif
             update_user_ldata(user_id, 'ddl_servers', ddl_dict)
         else:
             if 'gofile' not in ddl_dict or not ddl_dict['gofile'][0]:
-                ddl_dict['gofile'] = [True, "ikT3TJMacPF8NNXJQ7G7G9z244hV0eQK"]  # Aktifkan GoFile dengan API default
+                ddl_dict['gofile'] = [True, GOFILE_TOKEN]  # Aktifkan GoFile dengan API default
                 update_user_ldata(user_id, 'ddl_servers', ddl_dict)
 
         #ddl_serv, serv_list = 0, []
@@ -591,7 +610,7 @@ async def edit_user_settings(client, query):
         key = data[2][1:]
 
     # Set API default GoFile dan pastikan selalu aktif
-        api_gofile_default = "ikT3TJMacPF8NNXJQ7G7G9z244hV0eQK"
+        api_gofile_default = GOFILE_TOKEN
         ddl_dict[key] = [True, api_gofile_default]
 
         # Perbarui data pengguna
