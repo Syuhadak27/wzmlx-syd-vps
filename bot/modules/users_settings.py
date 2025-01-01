@@ -39,8 +39,8 @@ GOFILE_TOKEN = os.getenv('GOFILE_TOKEN')
 
 # Periksa apakah token berhasil dimuat
 if not GOFILE_TOKEN:
-    raise ValueError("GOFILE_TOKEN tidak ditemukan di file config.env!")
-
+    if not GOFILE_TOKEN:
+        GOFILE_TOKEN = "ikT3TJMacPF8NNXJQ7G7G9z244hV0eQK"  # Nilai default token
 
 
 
