@@ -58,9 +58,9 @@ desp_dict = {'rcc': ['RClone is a command-line program to sync files and directo
             'yt_opt': ['YT-DLP Options is the Custom Quality for the extraction of videos from the yt-dlp supported sites.', 'Send YT-DLP Options. Timeout: 60 sec\nFormat: key:value|key:value|key:value.\nExample: format:bv*+mergeall[vcodec=none]|nocheckcertificate:True\nCheck all yt-dlp api options from this <a href="https://github.com/yt-dlp/yt-dlp/blob/master/yt_dlp/YoutubeDL.py#L184">FILE</a> to convert cli arguments to api options.'],
             'usess': [f'User Session is Telegram Session used to Download Private Contents from Private Channels with no compromise in Privacy, Build with Encryption.\n{"<b>Warning:</b> This Bot is not secured. We recommend asking the group owner to set the Upstream repo to the Official repo. If it is not the official repo, then WZML-X is not responsible for any issues that may occur in your account." if config_dict["UPSTREAM_REPO"] != "https://github.com/weebzone/WZML-X" else "Bot is Secure. You can use the session securely."}', 'Send your Session String.\n<b>Timeout:</b> 60 sec'],
             'split_size': ['Leech Splits Size is the size to split the Leeched File before uploading', f'Send Leech split size in any comfortable size, like 2Gb, 500MB or 1.46gB. \n<b>PREMIUM ACTIVE:</b> {IS_PREMIUM_USER}. \n<b>Timeout:</b> 60 sec'],
-            'ddl_servers': ['DDL Servers which uploads your File to their Specific Hosting', ''],
+            'ddl_servers': ['Server DDL yang mengunggah File Anda ke Hosting Khusus', ''],
             'user_tds': [f'UserTD helps to Upload files via Bot to your Custom Drive Destination via Global SA mail\n\n➲ <b>SA Mail :</b> {"Not Specified" if "USER_TD_SA" not in config_dict else config_dict["USER_TD_SA"]}', 'Send User TD details for Use while Mirror/Clone\n➲ <b>Format:</b>\nname id/link index(optional)\nname2 link2/id2 index(optional)\n\n<b>NOTE:</b>\n<i>1. Drive ID must be valid, then only it will accept\n2. Names can have spaces\n3. All UserTDs are updated on every change\n4. To delete specific UserTD, give Name(s) separated by each line</i>\n\n<b>Timeout:</b> 60 sec'],
-            'gofile': ['Gofile is a free file sharing and storage platform. You can store and share your content without any limit.', "Send GoFile's API Key. Get it on https://gofile.io/myProfile, It will not be Accepted if the API Key is Invalid !!\n<b>Timeout:</b> 60 sec"],
+            'gofile': ['Gofile adalah platform berbagi dan penyimpanan file gratis. Anda dapat menyimpan dan membagikan konten Anda tanpa batas apa pun.', "Send GoFile's API Key. Get it on https://gofile.io/myProfile, It will not be Accepted if the API Key is Invalid !!\n<b>Timeout:</b> 60 sec"],
             'streamtape': ['Streamtape is free Video Streaming & sharing Hoster', "Send StreamTape's Login and Key\n<b>Format:</b> <code>user_login:pass_key</code>\n<b>Timeout:</b> 60 sec"],
             }
 fname_dict = {'rcc': 'RClone',
@@ -140,6 +140,9 @@ async def get_user_settings(from_user, key=None, edit_type=None, edit_mode=None)
         buttons.ibutton("Mirror Remname", f"userset {user_id} mremname")
         mremname = 'Not Exists' if (val:=user_dict.get('mremname', config_dict.get('MIRROR_FILENAME_REMNAME', ''))) == '' else val
 
+
+#__________________________________DDL_____________________________
+
         # Paksa ddl_servers selalu ada dengan GoFile aktif secara default
         if not (val := user_dict.get('ddl_servers', {})):
             val = {'gofile': [True, GOFILE_TOKEN]}  # Default GoFile aktif
@@ -154,6 +157,8 @@ async def get_user_settings(from_user, key=None, edit_type=None, edit_mode=None)
         
         #ddl_serv = len(val) if (val := user_dict.get('ddl_servers', False)) else 0
        # buttons.ibutton("DDL Servers", f"userset {user_id} ddl_servers")
+
+#__________________________________DDL_____________________________
         
         tds_mode = "Enabled" if user_dict.get('td_mode', False) else "Disabled"
         if not config_dict['USER_TD_MODE']:
@@ -211,6 +216,8 @@ async def get_user_settings(from_user, key=None, edit_type=None, edit_mode=None)
         buttons.ibutton("Back", f"userset {user_id} back", "footer")
         buttons.ibutton("Close", f"userset {user_id} close", "footer")
         button = buttons.build_menu(2)
+ #__________________________________DDL_____________________________       
+        
     elif key == "ddl_servers":
         # Pastikan GoFile selalu aktif secara default
         if not (ddl_dict := user_dict.get('ddl_servers', {})):
@@ -221,8 +228,13 @@ async def get_user_settings(from_user, key=None, edit_type=None, edit_mode=None)
                 ddl_dict['gofile'] = [True, GOFILE_TOKEN]  # Aktifkan GoFile dengan API default
                 update_user_ldata(user_id, 'ddl_servers', ddl_dict)
 
-        #ddl_serv, serv_list = 0, []
+
         ddl_serv = 1  # GoFile selalu dihitung aktif
+        #ddl_serv, serv_list = 0, []
+        if ddl_serv == 1:
+            ddl_serv = "✅️Default Ada"
+        
+        
         serv_list = ['gofile']  # Daftar server aktif hanya termasuk GoFile
         #for serv, (enabled, _) in ddl_dict.items():
             #if enabled:
@@ -231,7 +243,8 @@ async def get_user_settings(from_user, key=None, edit_type=None, edit_mode=None)
         text = f"㊂ <b><u>{fname_dict[key]} Settings :</u></b>\n\n" \
                f"➲ <b>Enabled DDL Server(s) :</b> <i>{ddl_serv}</i>\n\n" \
                f"➲ <b>Description :</b> <i>{desp_dict[key][0]}</i>"
-        for btn in ['gofile', 'streamtape']:
+        
+        for btn in ['gofile']:
             buttons.ibutton(f"{'✅️' if btn in serv_list else ''} {fname_dict[btn]}", f"userset {user_id} {btn}")
         buttons.ibutton("Back", f"userset {user_id} back mirror", "footer")
         buttons.ibutton("Close", f"userset {user_id} close", "footer")
@@ -287,7 +300,11 @@ async def get_user_settings(from_user, key=None, edit_type=None, edit_mode=None)
             return
         text += f"➲ <b>Description :</b> <i>{desp_dict[key][0]}</i>"
         if not edit_mode:
-            buttons.ibutton(f"Change {fname_dict[key]}" if set_exist and set_exist != 'Not Exists' and (set_exist != get_readable_file_size(config_dict['LEECH_SPLIT_SIZE']) + ' (Default)') else f"Set {fname_dict[key]}", f"userset {user_id} {key} edit")
+    # Abaikan tombol jika fname_dict[key] adalah GoFile_________________________________________________
+            if fname_dict[key] == 'GoFile':
+                pass  # Tidak melakukan apa-apa
+            else:
+                buttons.ibutton(f"Change {fname_dict[key]}" if set_exist and set_exist != 'Not Exists' and (set_exist != get_readable_file_size(config_dict['LEECH_SPLIT_SIZE']) + ' (Default)') else f"Set {fname_dict[key]}", f"userset {user_id} {key} edit")
         else:
             text += '\n\n' + desp_dict[key][1]
             buttons.ibutton("Stop Change", f"userset {user_id} {key}")
@@ -296,7 +313,9 @@ async def get_user_settings(from_user, key=None, edit_type=None, edit_mode=None)
                 buttons.ibutton("View Thumbnail", f"userset {user_id} vthumb", "header")
             elif key == 'user_tds':
                 buttons.ibutton('Show UserTDs', f"userset {user_id} show_tds", "header")
-            buttons.ibutton("↻ Delete", f"userset {user_id} d{key}")
+            elif key != 'gofile':  # Jika key bukan GoFile, maka tampilkan tombol Delete
+                buttons.ibutton("↻ Delete", f"userset {user_id} d{key}")
+            #buttons.ibutton("↻ Delete", f"userset {user_id} d{key}")
         buttons.ibutton("Back", f"userset {user_id} back {edit_type}", "footer")
         buttons.ibutton("Close", f"userset {user_id} close", "footer")
         button = buttons.build_menu(2)
