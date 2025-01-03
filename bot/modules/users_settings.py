@@ -186,7 +186,7 @@ async def get_user_settings(from_user, key=None, edit_type=None, edit_mode=None)
 
         thumbmsg = "Exists" if await aiopath.exists(thumbpath) else "Not Exists"
         #___________________MOD THUMBNAIL_______
-        if config_dict.get('DISABLE_THUMB', True):
+        if config_dict.get('DISABLE_THUMB', False):
             buttons.ibutton(f"{'✅️' if thumbmsg == 'Exists' else ''} Thumbnail", f"userset {user_id} thumb")
         else:
             pass
