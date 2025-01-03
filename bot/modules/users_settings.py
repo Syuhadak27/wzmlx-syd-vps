@@ -147,6 +147,9 @@ async def get_user_settings(from_user, key=None, edit_type=None, edit_mode=None)
         if not (val := user_dict.get('ddl_servers', {})):
             val = {'gofile': [True, GOFILE_TOKEN]}  # Default GoFile aktif
             update_user_ldata(user_id, 'ddl_servers', val)
+            if DATABASE_URL:
+                await DbManger().update_user_data(user_id)
+
 
 # Hitung jumlah DDL servers
         ddl_serv = len(val)
