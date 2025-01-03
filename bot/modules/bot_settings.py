@@ -788,7 +788,7 @@ async def get_buttons(key=None, edit_type=None, edit_mode=None, mess=None):
         msg = f'<b>Variable:</b> <code>{key}</code>\n\n'
         msg += f'<b>Description:</b> {default_desp.get(key, "No Description Provided")}\n\n'
         if mess.chat.type == ChatType.PRIVATE:
-            msg += f'<b>Value:</b> <spoiler> {config_dict.get(key, "None")} </spoiler>\n\n'
+            msg += f'<b>Value:</b> {config_dict.get(key, "None")} \n\n'
         else:
             buttons.ibutton('View Var Value',
                             f"botset showvar {key}", position="header")
