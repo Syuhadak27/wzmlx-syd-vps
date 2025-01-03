@@ -296,6 +296,9 @@ async def load_config():
 
     WEB_PINCODE = environ.get('WEB_PINCODE', '')
     WEB_PINCODE = WEB_PINCODE.lower() == 'true'
+    
+    DISABLE_THUMB = environ.get('DISABLE_THUMB', '')
+    DISABLE_THUMB = DISABLE_THUMB.lower() == 'true'
     #___________________________MODIF DISINI________________________________
     BAR_PENUH = environ.get('BAR_PENUH', '')
     if len(BAR_PENUH) == 0:
