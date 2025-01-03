@@ -376,7 +376,7 @@ INCOMPLETE_TASK_NOTIFIER = INCOMPLETE_TASK_NOTIFIER.lower() == 'true'
 
 #______mod disini
 DISABLE_THUMB = environ.get('DISABLE_THUMB', '')
-DISABLE_THUMB = DISABLE_THUMB.lower() == 'true
+DISABLE_THUMB = DISABLE_THUMB.lower() == 'true'
 
 STOP_DUPLICATE = environ.get('STOP_DUPLICATE', '')
 STOP_DUPLICATE = STOP_DUPLICATE.lower() == 'true'
