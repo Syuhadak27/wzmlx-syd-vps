@@ -312,9 +312,25 @@ MIRROR_FILENAME_REMNAME = environ.get('MIRROR_FILENAME_REMNAME', '')
 if len(MIRROR_FILENAME_REMNAME) == 0:
     MIRROR_FILENAME_REMNAME = ''
 
-SEARCH_PLUGINS = environ.get('SEARCH_PLUGINS', '')
-if len(SEARCH_PLUGINS) == 0:
-    SEARCH_PLUGINS = ''
+
+#____________________________
+#SEARCH_PLUGINS = environ.get('SEARCH_PLUGINS', '')
+#if len(SEARCH_PLUGINS) == 0:
+ #   SEARCH_PLUGINS = ''
+
+
+from config_toren import SEARCH_PLUGINS as TORENT_PLUGIN
+
+# Mengambil nilai dari environment variable atau dari TORENT_PLUGIN jika tidak tersedia
+SEARCH_PLUGINS = os.environ.get('SEARCH_PLUGINS', None)
+
+if SEARCH_PLUGINS:
+    # Jika SEARCH_PLUGINS dari environment adalah string JSON, kita perlu mengonversinya ke list
+    import json
+    SEARCH_PLUGINS = json.loads(SEARCH_PLUGINS)
+else:
+    SEARCH_PLUGINS = TORENT_PLUGIN
+#___________________________
 
 MAX_SPLIT_SIZE = 4194304000 if IS_PREMIUM_USER else 2097152000
 
